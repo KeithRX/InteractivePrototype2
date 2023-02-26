@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>To do list</title>
+</head>
+<body class="bg-gray-200 p-4">
+    <h1 class="text-2xl font-bold mb-4">To-Do List</h1>
+    <div id="app" class="mb-4">
+      <input type="text" class="border border-gray-400 p-2 mb-2" id="myInput">
+      <button onclick="newElement()" class="bg-blue-500 text-white p-2 mb-2 rounded-lg">Add Task</button>
+        <button onclick="cleanList()" class="bg-red-500 text-white p-2 mb-2 rounded-lg">Clean all list</button>
+      <ul class="list-none" id="myUL">
+        <li class="border border-gray-400 p-2 mb-2 flex justify-between" >
+            <div class="flex place-items-center">
+                <input type="checkbox" class="border-gray-400 mr-2  checked:bg-blue-500" />
+                This is a sample
+            </div>
+          <button class="bg-red-500 text-white w-20 h-6 rounded-full ml-2" id="button" @click="removeTask(index)">x</button>
+        </li>
+      </ul>
+    </div>
+
+    <script>
+        function newElement(){
+            var li = document.createElement("li");
+            //创建一个叫做li的变量（现在这个变量是空的，没有任何style也没有内容）
+            li.classList.add("border", "border-gray-400", "p-2", "mb-2", "flex", "justify-between");
+            //这一行表示向刚刚创建的叫做Li的变量添加一些tailwindCSS里的style
+            var div = document.createElement("div");
+            //创建一个叫做 div的空变量如第一个
+            div.classList.add("flex", "place-items-center");
+            //给刚创建的div添加一个flex和place items center的style
+            var inputValue = document.getElementById("myInput").value;
+            //创建一个叫做inputValue的变量，并从刚才的HTML里id叫做myInput的地方获取输入的内容，这里value指myInput里的值
+            var t = document.createTextNode(inputValue)
+            //这一行代码是创建一个文本节点，并将它的内容设置为文本输入框中的内容。它以字符串形式存储在变量't'中，以便后面可以添加到列表项（li）中。
+            //简单地说，就是创建一个文本节点并存储在变量't'中，文本节点的内容是用户在文本输入框中输入的内容。
+            div.appendChild(t);
+            //在刚才创建的叫做div的变量中将上一行t变量的内容放进去
+            li.appendChild(div);
+            //再把上一行设置好的div（即已经将t中的内容放入的div）放在li中
+            var input = document.createElement("input");
+            //相当于创建了一个新的 HTML 元素（空的），并将其存储在 input 变量中。
+            input.type = "checkbox";
+            //将刚刚创建的叫做input的变量设定为“checkbox”
+            input.classList.add("border-gray-400", "mr-2", "checked:bg-blue-500");
+            //.add是JavaScript中的.classList对象的一个方法，用于向HTML元素添加一个或多个CSS类。
+            //这一行的意思是在给刚刚创建的input添加tailwindCSS的style
+            div.insertBefore(input, t);
+            //这一行代码的意思是在 div 元素中，在 t (刚刚创建的文本变量/节点) 前插入一个名为 input 的元素。
+            //也就是说，input 元素将成为 div 元素的子元素，并且在文本节点 t 的前面。
+            //这个方法用来在已有的元素列表中的指定位置插入新元素。（insertBefore就是插入在div中的最前位置）
+
+
+            var btn = document.createElement("button");
+            //创建一个叫做 btu 的变量，在这个变量中创建一个叫做button的元素
+            btn.classList.add("bg-red-500", "text-white", "w-20", "h-6", "rounded-full", "ml-2");
+            //给这个按钮使用tailwindCSS的style
+            //注意这里的每一个style都需要用“”单独框起来
+            btn.innerHTML = "x";
+            // 意思是将变量btn的内容设置为字符 "x"。
+            //innerHTML意思是在HTML中输入‘x“
+            //在任何情况下，都可以通过innerHTML向刚刚javascript创建的元素中添加文字
+            //它表示一个 HTML 元素内部的 HTML 内容。可以使用该属性访问或修改一个元素的 HTML 内容。
+            //innerHTML 不仅可以插入文字，还能插入图片等其他元素
+            btn.onclick = function() {
+                //创建一个没有名字的函数，并将其与btu的点击状态绑定（.onclick）
+                //意思是当点击btu时运行以下的代码
+                li.remove();
+                //这里是指删除li，.remove()使用过javascript内置的一个函数，用于删除.前面的元素
+            };
+            li.appendChild(btn);
+            //这里是指在最初创建的叫做li的变量中添加这个叫做btn的变量（注意这里与btn.onclick是否运行无关，
+            //只是为了让每一行创建的list里都含有一个删除的按钮即变量btn）
+
+
+
+            if (inputValue === '') {
+                //获取在之前定义的叫做inputValue的变量中的内容，并与‘’对比，如果是‘’则执行：
+                alert("You must write something!");
+                //alert是 JavaScript 中的内置函数，用于弹出警告对话框
+            } else {
+                //否则就执行
+                document.getElementById("myUL").appendChild(li);
+                //这一行代码的意思是将刚刚创建的HTML元素（li）添加到文档中的现有元素（即id是myUL的元素）中。
+                //这里li指的是在第29行和第31行创建并进行过style的li变量
+                //这里可以想象成把id=myUL 拿过来，将li放进myUL中，然后再放回去
+            }
+            document.getElementById("myInput").value = "";
+            //这一行的意思是将输入框清空，将myInput的内容设置为“”， 如果没有这一行，则刚刚输入的内容会一直在输入框内
+        }
+
+        function cleanList() {
+            //创建一个没有名字的函数，将它与on=cleanList的那个button连接起来
+            var list = document.getElementById("myUL");
+            //创建一个叫做list的变量，内容为获取Id为myUL的元素（从HTML中获取）
+
+            //如果在这里直接添加一个list.remove()就会直接删除整个list，并且无法重新输入，因为myUL这时已经不存在了
+            //问： 为什么我在下面这个循环中把list.removeChild(list.firstChild);换成list.remove()后这个就会变成一个死循环
+
+            while (list.firstChild) {
+                //这里while循环指的是如果存在第一个子元素（fistChild）则进行循环
+                //可以理解获取list（myUL）中的第一个list
+                list.removeChild(list.firstChild);
+                //删除list中的子元素，再指定删除的子元素是第一个子元素（firstChild）
+        }
+}
+        function filterList() {
+                    var input, filter, ul, li, div, i, txtValue;//变量 input、filter、ul、li、div、i 和 txtValue。
+                    input = document.getElementById("myInput");//通过使用 document.getElementById 获取 ID 为 "myInput" 的元素，并将其赋值给 input 变量。
+                    filter = input.value.toLowerCase();//获取 input 元素的值，将其转换为小写字母，并将其赋值给 filter 变量。
+                    ul = document.getElementById("myUL");//通过使用 document.getElementById 获取 ID 为 "myUL" 的元素，并将其赋值给 ul 变量。
+                    li = ul.getElementsByTagName("li");//获取 ul 元素中所有的 li 元素，并将它们赋值给 li 变量。
+                    for (i = 0; i < li.length; i++) { //开始一个循环，遍历所有的 li 元素。
+                        div = li[i].getElementsByTagName("div")[0];//获取当前 li 元素中第一个 div 元素，并将其赋值给 div 变量。
+                        txtValue = div.textContent || div.innerText;//获取 div 元素的文本内容，并将其赋值给 txtValue 变量。如果 div 元素中有 textContent 属性，则使用该属性，否则使用 innerText 属性。
+                        if (txtValue.toLowerCase().indexOf(filter) >= 0) {//检查当前 li 元素的文本内容是否包含 filter 变量的值。如果是，则显示该元素，否则隐藏该元素。
+                        li[i].style.display = "";//如果该 li 元素应该被显示，则设置其样式的 display 属性为空字符串，以使其在页面上显示。
+                        } else {//如果该 li 元素不应该被显示，则将其样式的 display 属性设置为 "none"，以使其在页面上隐藏。
+                        li[i].style.display = "none";//隐藏该 li 元素。
+                        }
+                    }
+                }
+        
+
+        function filterList() {
+            var input, filter, ul, li, div, i, txtValue;//变量 input、filter、ul、li、div、i 和 txtValue。
+            input = document.getElementById("myInput");//通过使用 document.getElementById 获取 ID 为 "myInput" 的元素，并将其赋值给 input 变量。
+            filter = input.value.toLowerCase();//获取 input 元素的值，将其转换为小写字母，并将其赋值给 filter 变量。
+            ul = document.getElementById("myUL");//通过使用 document.getElementById 获取 ID 为 "myUL" 的元素，并将其赋值给 ul 变量。
+            li = ul.getElementsByTagName("li");//获取 ul 元素中所有的 li 元素，并将它们赋值给 li 变量。
+            for (i = 0; i < li.length; i++) { //开始一个循环，遍历所有的 li 元素。
+                div = li[i].getElementsByTagName("div")[0];//获取当前 li 元素中第一个 div 元素，并将其赋值给 div 变量。
+                txtValue = div.textContent || div.innerText;//获取 div 元素的文本内容，并将其赋值给 txtValue 变量。如果 div 元素中有 textContent 属性，则使用该属性，否则使用 innerText 属性。
+                if (txtValue.toLowerCase().indexOf(filter) >= 0) {//检查当前 li 元素的文本内容是否包含 filter 变量的值。如果是，则显示该元素，否则隐藏该元素。
+                li[i].style.display = "";//如果该 li 元素应该被显示，则设置其样式的 display 属性为空字符串，以使其在页面上显示。
+                } else {//如果该 li 元素不应该被显示，则将其样式的 display 属性设置为 "none"，以使其在页面上隐藏。
+                li[i].style.display = "none";//隐藏该 li 元素。
+                }
+            }
+        }
+
+</script>
+
+</body>
+</html>
